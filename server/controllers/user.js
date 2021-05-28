@@ -42,7 +42,7 @@ const update = async (req, res, next) => {
   }
 };
 
-const remove = (req, res, next) => {
+const remove = async (req, res, next) => {
   try {
     let user = req.profile;
     let deleted = await user.remove();
