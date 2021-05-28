@@ -33,7 +33,6 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: "A password is required",
   },
-  salt: String,
 });
 
 UserSchema.virtual("password")
@@ -71,16 +70,10 @@ UserSchema.methods = {
   encryptPassword: function (password) {
     if (!password) throw new Error("No password provided for encryption.");
     try {
-      bcrypt.hash(password, salt).then((hash) => hash);
+      bcrypt.hash(password, 10).then((hash) => hash);
     } catch (err) {
-      console.log("Failed to encrypt password: ", err);
-      return "";
+      throw new Error("Failed to encrypt password: ", err);
     }
-  },
-  makeSalt: async function () {
-    const salt = await bcrypt.genSalt(10);
-    if (!salt) throw new Error("No salt generated.");
-    return salt;
   },
 };
 
