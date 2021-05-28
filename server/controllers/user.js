@@ -1,10 +1,8 @@
 import User from "../models/user";
 import extend from "lodash/extend";
-import {
-  getErrMessage,
-  getUniqueErrMessage,
-} from "./../helpers/dbErrorHandler";
+import { getErrMessage } from "./../helpers/dbErrorHandler";
 
+// Helper to remove hashed password from stored user data before response to client
 const stripHash = (u) => {
   const {
     name,
@@ -22,7 +20,7 @@ const create = async (req, res) => {
   const user = new User(req.body);
   try {
     await user.save();
-    return res.status(200).json({ message: "Account successfully created." });
+    return res.status(200).json({ message: "Account successfully created" });
   } catch (err) {
     return res.status(500).json({ error: getErrMessage(err) });
   }
@@ -43,6 +41,7 @@ const update = async (req, res, next) => {
     return res.status(500).json({ error: getErrMessage(err) });
   }
 };
+
 const remove = (req, res, next) => {
   try {
     let user = req.profile;
@@ -68,12 +67,12 @@ const userById = async (req, res, next, id) => {
   try {
     const user = await User.findById(id);
     if (!user)
-      return res.status(404).json({ error: "Specified user not found." });
+      return res.status(404).json({ error: "Specified user not found" });
     req.profile = user;
     next();
   } catch (err) {
     return res.status(500).json({
-      error: "Could not retrieve specified user.",
+      error: "Could not retrieve specified user",
     });
   }
 };

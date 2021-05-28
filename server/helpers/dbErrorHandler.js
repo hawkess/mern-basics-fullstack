@@ -4,13 +4,13 @@ const getErrMessage = (err) => {
     if (err.code === 11000 || err.code === 11001) {
       message = getUniqueErrMessage(err);
     } else {
-      message = "Something went wrong.";
+      message = "Something went wrong";
     }
   } else {
     for (let e in err.errors) {
       message = err.errors[e].message
         ? err.errors[e].message
-        : "Something went wrong.";
+        : "Something went wrong";
     }
   }
 
@@ -25,11 +25,11 @@ const getUniqueErrMessage = (err) => {
       err.message.lastIndexOf("_1")
     );
     message =
-      field.charAt(0).toUpperCase() + field.slice(1) + " already exists.";
+      field.charAt(0).toUpperCase() + field.slice(1) + " already exists";
   } catch (exc) {
-    message = "Unique attribute already exists.";
+    message = "Unique attribute already exists";
   }
   return message;
 };
 
-export default { getErrMessage, getUniqueErrMessage };
+export default { getErrMessage };

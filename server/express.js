@@ -21,4 +21,15 @@ app.get("/", (req, res) => {
   res.status(200).send(Template());
 });
 
+app.use((err, req, res, next) => {
+  if (err) {
+    const status = err.name === "UnauthorizedError" ? 401 : 400;
+    const message = { error: `${err.name}: ${err.message}` };
+    res.status(status).json(message);
+    status !== 401 && console.log(message);
+    return;
+  }
+  next();
+});
+
 export default app;

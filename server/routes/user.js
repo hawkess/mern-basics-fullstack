@@ -7,9 +7,9 @@ router.route("/api/users").get(user.list).post(user.create);
 
 router
   .route("/api/users/:userId")
-  .get(user.read)
-  .put(user.update)
-  .delete(user.remove);
+  .get(auth.requireAuth, user.read)
+  .put(auth.requireAuth, auth.hasAuth, user.update)
+  .delete(auth.requireAuth, auth.hasAuth, user.remove);
 
 router.param("userId", user.userById);
 
