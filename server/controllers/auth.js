@@ -35,6 +35,7 @@ const logout = (req, res) => {
 
 const requireAuth = expressJwt({
   secret: config.jwtSecret,
+  algorithms: ["HS256"],
   userProperty: "auth",
 });
 

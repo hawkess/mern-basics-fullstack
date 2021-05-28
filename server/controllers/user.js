@@ -1,6 +1,6 @@
 import User from "../models/user";
 import extend from "lodash/extend";
-import { getErrMessage } from "./../helpers/dbErrorHandler";
+import getErrMessage from "./../helpers/dbErrorHandler";
 
 // Helper to remove hashed password from stored user data before response to client
 const stripHash = (u) => {
