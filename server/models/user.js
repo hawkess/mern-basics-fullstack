@@ -46,9 +46,27 @@ UserSchema.virtual("password")
     return this._password;
   });
 
+UserSchema.path("hashed_password").validate(function (v) {
+  if (
+    this._password &&
+    (this._password.length < 6 || this._password.length > 30)
+  ) {
+    this.invalidate(
+      "password",
+      "Password must be between 6 and 30 characters."
+    );
+  }
+  if (this.isNew && !this._password) {
+    this.invalidate("password", "A password is required.");
+  }
+});
+
 UserSchema.methods = {
   auth: function (plaintext) {
-    return this.encryptPassword(plaintext) === this.hashed_password;
+    bcrypt
+      .compare(plaintext, this.hashed_password)
+      .then((res) => res)
+      .catch((err) => console.log(err.message));
   },
   encryptPassword: function (password) {
     if (!password) throw new Error("No password provided for encryption.");
