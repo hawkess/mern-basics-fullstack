@@ -1,14 +1,16 @@
-import User from "./../models/user";
+import Password from "../models/password";
+import User from "../models/user";
+
 import jwt from "jsonwebtoken";
 import expressJwt from "express-jwt";
-import config from "./../../config/config";
+import config from "../../config/config";
 
 const login = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) return res.status(404).json({ error: "User not found" });
-
-    if (!user.auth(req.body.password)) {
+    const { password } = await Password.findById(user.passwordId);
+    if (!user.auth(password)) {
       return res.status(401).json({ error: "Incorrect password" });
     }
 

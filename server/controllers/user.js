@@ -1,6 +1,7 @@
+import Password from "../models/password";
 import User from "../models/user";
 import extend from "lodash/extend";
-import getErrMessage from "./../helpers/dbErrorHandler";
+import getErrMessage from "../helpers/dbErrorHandler";
 
 // Helper to remove hashed password from stored user data before response to client
 const stripHash = (u) => {
@@ -17,8 +18,15 @@ const stripHash = (u) => {
 };
 
 const create = async (req, res) => {
-  const user = new User(req.body);
+  const password = new Password({ password: req.body.password });
+  const user = new User({
+    name: req.body.name,
+    email: req.body.email,
+    passwordId: password._id,
+  });
+
   try {
+    await password.save();
     await user.save();
     return res.status(200).json({ message: "Account successfully created" });
   } catch (err) {
