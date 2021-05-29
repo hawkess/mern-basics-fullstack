@@ -9,10 +9,11 @@ const login = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) return res.status(404).json({ error: "User not found" });
-    const { password } = await Password.findById(user.passwordId);
-    if (!user.auth(password)) {
+    const password = await Password.findById(user.passwordId);
+    if (!password)
+      return res.status(500).json({ error: "Something went wrong " });
+    if (!password.auth(req.body.password))
       return res.status(401).json({ error: "Incorrect password" });
-    }
 
     const token = jwt.sign({ _id: user._id }, config.jwtSecret);
     res.cookie("t", token, { expire: new Date() + 9999 });
@@ -26,7 +27,9 @@ const login = async (req, res) => {
       },
     });
   } catch (err) {
-    return res.status(401).json({ error: "Could not complete authentication" });
+    return res
+      .status(401)
+      .json({ error: "Could not complete authentication: " + err });
   }
 };
 
@@ -47,6 +50,7 @@ const hasAuth = (req, res, next) => {
     return res
       .status(403)
       .json({ error: "You do not have permission to do that" });
+  next();
 };
 
 export default { login, logout, requireAuth, hasAuth };

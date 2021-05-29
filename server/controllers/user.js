@@ -3,8 +3,8 @@ import User from "../models/user";
 import extend from "lodash/extend";
 import getErrMessage from "../helpers/dbErrorHandler";
 
-// Helper to remove hashed password from stored user data before response to client
-const stripHash = (u) => {
+// Helper to remove password id from stored user data before response to client
+const stripPasswordId = (u) => {
   const {
     name,
     email,
@@ -35,16 +35,19 @@ const create = async (req, res) => {
 };
 
 const read = (req, res) => {
-  return res.json(stripHash(req.profile));
+  return res.json(stripPasswordId(req.profile));
 };
 
 const update = async (req, res, next) => {
   try {
-    let user = req.profile;
-    user = extend(user, req.body);
+    const user = req.profile.user;
+    const password = req.profile.password;
     user.timestamp.updated = Date.now();
+    password.timestamp.updated = Date.now();
     await user.save();
-    res.json(stripHash(user));
+    await password.save();
+    res.json(stripPasswordId(user));
+    next();
   } catch (err) {
     return res.status(500).json({ error: getErrMessage(err) });
   }
@@ -54,7 +57,8 @@ const remove = async (req, res, next) => {
   try {
     let user = req.profile;
     let deleted = await user.remove();
-    res.json(stripHash(deleted));
+    res.json(stripPasswordId(deleted));
+    next();
   } catch (err) {
     return res.status(500).json({ error: getErrMessage });
   }
@@ -76,7 +80,10 @@ const userById = async (req, res, next, id) => {
     const user = await User.findById(id);
     if (!user)
       return res.status(404).json({ error: "Specified user not found" });
-    req.profile = user;
+    const password = await Password.findById(user.passwordId);
+    if (!password)
+      return res.status(500).json({ error: "Something went wrong" });
+    req.profile = { user: user, password: password };
     next();
   } catch (err) {
     return res.status(500).json({

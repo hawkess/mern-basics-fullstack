@@ -34,13 +34,4 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-UserSchema.methods = {
-  auth: function (plaintext) {
-    bcrypt
-      .compare(plaintext, password)
-      .then((res) => res)
-      .catch((err) => console.log(err.message));
-  },
-};
-
 export default mongoose.model("User", UserSchema);
