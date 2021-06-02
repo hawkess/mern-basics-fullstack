@@ -1,0 +1,13 @@
+.card {
+  max-width: 600;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.title {
+  padding: 12px 10px 8px;
+}
+
+media {
+  min-height: 400;
+}

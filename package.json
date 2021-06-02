@@ -9,8 +9,13 @@
     "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.14.2",
     "@babel/preset-react": "^7.13.13",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.6",
+    "file-loader": "^6.2.0",
     "nodemon": "^2.0.7",
+    "react-refresh": "^0.10.0",
+    "style-loader": "^2.0.0",
     "webpack": "^5.38.0",
     "webpack-cli": "^4.7.0",
     "webpack-dev-middleware": "^4.3.0",
@@ -21,6 +26,7 @@
     "development": "nodemon"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "bcrypt": "^5.0.1",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
@@ -31,6 +37,12 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mongoose": "^5.12.11",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.3",
     "validator": "^13.6.0"
   }
 }
