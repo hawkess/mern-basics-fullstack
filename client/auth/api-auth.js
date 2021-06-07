@@ -1,5 +1,6 @@
 import auth from "../apis/auth";
-import { remove } from "../user/api-user";
+
+let sessionJwt;
 
 const login = async (user) => {
   try {
@@ -26,4 +27,13 @@ const logout = async () => {
   }
 };
 
-export { login, logout };
+function authenticate(jwt, expiry, noRedirect) {
+  sessionJwt = {
+    token: jwt,
+    expiry: expiry,
+  };
+  if (!noRedirect) {
+  }
+}
+
+export { authenticate, login, logout };

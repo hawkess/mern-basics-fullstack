@@ -1,6 +1,5 @@
 import Password from "../models/password";
 import User from "../models/user";
-import extend from "lodash/extend";
 import getErrMessage from "../helpers/dbErrorHandler";
 
 // Helper to remove password id from stored user data before response to client
